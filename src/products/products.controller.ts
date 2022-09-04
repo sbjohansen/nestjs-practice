@@ -4,15 +4,20 @@ import { ProductsDataService } from './products-data.service';
 import { UpdateProductDTO } from './dto/update-product.dto';
 import { Product } from './interfaces/products.interface';
 import { dateToArray } from '../shared/helpers/date.helper';
-import { Post, Delete, Put, Get, Body, Param } from '@nestjs/common';
+import { Post, Delete, Put, Get, Body, Param, UseGuards } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
-
+import { ParseUUIDPipe } from '@nestjs/common';
+import { RoleGuard } from '../shared/guards/role.guard';
 @Controller('products')
 export class ProductsController {
   constructor(private productRepository: ProductsDataService) {}
 
   @Post()
-  addProduct(@Body() _item_: CreateProductDTO): ExternalProductDto {
+  @UseGuards(RoleGuard)
+  addProduct(
+    @Body()
+    _item_: CreateProductDTO,
+  ): ExternalProductDto {
     return this.productRepository.addProduct(_item_);
   }
 
@@ -25,13 +30,15 @@ export class ProductsController {
   }
 
   @Delete(':id')
-  deleteProduct(@Param('id') id: string): void {
+  deleteProduct(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ): void {
     return this.productRepository.deleteProduct(id);
   }
 
   @Put(':id')
   updateProduct(
-    @Param('id') id: string,
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body() dto: UpdateProductDTO,
   ): ExternalProductDto {
     return this.mapProductToExternal(
@@ -40,7 +47,9 @@ export class ProductsController {
   }
 
   @Get(':id')
-  getProductById(@Param('id') id: string): ExternalProductDto {
+  getProductById(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ): ExternalProductDto {
     return this.mapProductToExternal(this.productRepository.getProductById(id));
   }
 
