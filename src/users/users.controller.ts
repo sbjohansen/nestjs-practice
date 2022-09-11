@@ -30,7 +30,13 @@ export class UsersController {
   mapUserToExternal(user: User): ExternalUserDTO {
     return {
       ...user,
-      address: user.address.map((i) => ({ ...i })),
+      address: user.address.map((address) => {
+        return {
+          ...address,
+          id: address.id,
+          userId: address.user,
+        };
+      }),
     };
   }
 

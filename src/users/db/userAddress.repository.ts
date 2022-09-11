@@ -10,4 +10,7 @@ export class UserAddressRepository extends Repository<UserAddress> {
       },
     });
   }
+  findAllAddresses(): Promise<UserAddress[]> {
+    return this.find();
+  }
 }

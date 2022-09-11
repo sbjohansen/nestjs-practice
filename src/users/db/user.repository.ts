@@ -22,4 +22,7 @@ export class UserRepository extends Repository<User> {
       },
     });
   }
+  findRoleByName(name: string): Promise<User> {
+    return this.findOne({ where: { role: name } });
+  }
 }

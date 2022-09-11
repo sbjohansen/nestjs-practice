@@ -13,7 +13,7 @@ export class CreateUserDTO {
   email: string;
   dateOfBirth: Date;
   @Type(() => CreateUserAddressDTO)
-  address?: Array<CreateUserAddressDTO>;
+  address?: CreateUserAddressDTO[];
   @IsEnum(Roles)
   role: Array<Roles>;
 }

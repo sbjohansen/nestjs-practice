@@ -7,6 +7,7 @@ import { UserRepository } from './db/user.repository';
 import { UserAddressRepository } from './db/userAddress.repository';
 import { User } from './db/users.entity';
 import { UserAddress } from './db/userAddress.entity';
+import { Role } from './db/role.entity';
 @Injectable()
 export class UsersDataService {
   constructor(
@@ -22,12 +23,16 @@ export class UsersDataService {
       throw new UserRequireUniqueEmailException();
     } */
 
+    const addresses: UserAddress[] =
+      await this.userAddressRepository.findAllAddresses();
+
+    console.log(addresses);
     const userToSave = new User();
     userToSave.firstName = _item_.firstName;
     userToSave.lastName = _item_.lastName;
     userToSave.email = _item_.email;
     userToSave.dateOfBirth = _item_.dateOfBirth;
-    userToSave.address = await this.prepareUserAddressesToSave(_item_.address);
+    userToSave.address = addresses;
     userToSave.role = _item_.role;
     return this.userRepository.save(userToSave);
   }
