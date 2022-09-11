@@ -1,6 +1,6 @@
 import { Roles } from '../enums/roles.enum';
 import { UserAddress } from '../interfaces/user.interface';
-import { Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 import {
   IsEmail,
   IsNotEmpty,
@@ -32,10 +32,10 @@ export class CreateUserAddressDTO {
   city: string;
   @IsNotEmpty()
   @IsNumber()
-  house: string;
+  house: number;
   @IsNotEmpty()
   @IsNumber()
-  apartment: string;
+  apartment: number;
   @IsNotEmpty()
   country: string;
 }

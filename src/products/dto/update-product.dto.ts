@@ -4,6 +4,6 @@ export interface UpdateProductDTO {
   name?: string;
   price?: number;
   count?: number;
-  tags?: Array<Tags>;
+  tags?: Tags[];
   updatedAt?: Array<number>;
 }

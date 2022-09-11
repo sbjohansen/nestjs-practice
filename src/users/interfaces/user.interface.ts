@@ -6,8 +6,8 @@ export interface User {
   lastName: string;
   email: string;
   dateOfBirth: Date;
-  address?: Array<UserAddress>;
-  role: Array<Roles>;
+  address?: string;
+  role: string;
 }
 
 export interface UserAddress {
