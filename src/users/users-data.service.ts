@@ -18,11 +18,10 @@ export class UsersDataService {
 
   async addUser(_item_: CreateUserDTO): Promise<User> {
     const checkEmail = this.getUserByEmail(_item_.email);
-    if (checkEmail) {
+    /*if (checkEmail) {
       throw new UserRequireUniqueEmailException();
-    }
+    } */
     const userToSave = new User();
-    userToSave.id = uuidv4();
     userToSave.firstName = _item_.firstName;
     userToSave.lastName = _item_.lastName;
     userToSave.email = _item_.email;
@@ -33,7 +32,7 @@ export class UsersDataService {
   }
 
   async getUserByEmail(email: string): Promise<User> {
-    return this.userRepository.findOneBy({ email });
+    return this.userRepository.findOne({ email });
   }
 
   async deleteUser(id: string): Promise<void> {
@@ -58,7 +57,7 @@ export class UsersDataService {
   }
 
   async getUserById(id: string): Promise<User> {
-    return this.userRepository.findOneBy({ id });
+    return this.userRepository.findOne(id);
   }
 
   async getAllUsers(): Promise<User[]> {

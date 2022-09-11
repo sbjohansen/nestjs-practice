@@ -25,6 +25,7 @@ export class User {
   dateOfBirth: Date;
   @OneToMany((type) => UserAddress, (address) => address.user)
   address?: UserAddress[];
+
   @Column('enum', {
     enum: Roles,
   })

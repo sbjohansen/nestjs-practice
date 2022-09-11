@@ -1,13 +1,6 @@
 import { Roles } from '../enums/roles.enum';
-import { UserAddress } from '../interfaces/user.interface';
 import { Type } from 'class-transformer';
-import {
-  IsEmail,
-  IsNotEmpty,
-  ValidateNested,
-  IsNumber,
-  IsEnum,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, IsEnum } from 'class-validator';
 
 export class CreateUserDTO {
   @IsNotEmpty()
@@ -20,22 +13,22 @@ export class CreateUserDTO {
   email: string;
   dateOfBirth: Date;
   @Type(() => CreateUserAddressDTO)
-  address: Array<UserAddress>;
+  address?: Array<CreateUserAddressDTO>;
   @IsEnum(Roles)
   role: Array<Roles>;
 }
 
 export class CreateUserAddressDTO {
   @IsNotEmpty()
-  street: string;
+  country: string;
   @IsNotEmpty()
   city: string;
+  @IsNotEmpty()
+  street: string;
   @IsNotEmpty()
   @IsNumber()
   house: number;
   @IsNotEmpty()
   @IsNumber()
   apartment: number;
-  @IsNotEmpty()
-  country: string;
 }

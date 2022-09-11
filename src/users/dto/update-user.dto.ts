@@ -1,5 +1,4 @@
 import { Roles } from '../enums/roles.enum';
-import { UserAddress } from '../interfaces/user.interface';
 import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export interface UpdateUserDTO {
@@ -7,7 +6,7 @@ export interface UpdateUserDTO {
   lastName?: string;
   email?: string;
   dateOfBirth?: Date;
-  address?: Array<UserAddress>;
+  address?: Array<UpdateUserAddressDTO>;
   role?: Array<Roles>;
 }
 

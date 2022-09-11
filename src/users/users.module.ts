@@ -7,11 +7,11 @@ import { UserRepository } from './db/user.repository';
 import { UserAddressRepository } from './db/userAddress.repository';
 
 @Module({
-  controllers: [UsersController],
-  providers: [UsersDataService, UserValidatorService],
   imports: [
     TypeOrmModule.forFeature([UserRepository]),
     TypeOrmModule.forFeature([UserAddressRepository]),
   ],
+  controllers: [UsersController],
+  providers: [UsersDataService, UserValidatorService],
 })
 export class UsersModule {}

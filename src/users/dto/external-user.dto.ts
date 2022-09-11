@@ -1,5 +1,4 @@
 import { Roles } from '../enums/roles.enum';
-import { UserAddress } from '../interfaces/user.interface';
 
 export interface ExternalUserDTO {
   id: string;

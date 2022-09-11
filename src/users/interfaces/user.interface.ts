@@ -6,7 +6,7 @@ export interface User {
   lastName: string;
   email: string;
   dateOfBirth: Date;
-  address?: string;
+  address?: UserAddress[];
   role: string;
 }
 
