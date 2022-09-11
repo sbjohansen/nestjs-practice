@@ -21,6 +21,7 @@ export class UsersDataService {
     /*if (checkEmail) {
       throw new UserRequireUniqueEmailException();
     } */
+
     const userToSave = new User();
     userToSave.firstName = _item_.firstName;
     userToSave.lastName = _item_.lastName;

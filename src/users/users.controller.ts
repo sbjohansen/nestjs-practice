@@ -19,10 +19,7 @@ import { UserAddressRepository } from './db/userAddress.repository';
 import { UserAddress } from './db/userAddress.entity';
 @Controller('users')
 export class UsersController {
-  constructor(
-    private userRepository: UsersDataService,
-    private userAddressRepository: UserAddressRepository,
-  ) {}
+  constructor(private userRepository: UsersDataService) {}
 
   @Post()
   async addUser(@Body() _item_: CreateUserDTO): Promise<ExternalUserDTO> {
@@ -33,8 +30,7 @@ export class UsersController {
   mapUserToExternal(user: User): ExternalUserDTO {
     return {
       ...user,
-      role: user.role?.map((i) => i),
-      address: this.prepareUserAddressesToSave(user.address),
+      address: user.address.map((i) => ({ ...i })),
     };
   }
 
@@ -66,23 +62,5 @@ export class UsersController {
     return (await this.userRepository.getAllUsers()).map((i) =>
       this.mapUserToExternal(i),
     );
-  }
-
-  async prepareUserAddressesToSave(
-    address: CreateUserAddressDTO[] | UpdateUserAddressDTO[],
-  ): Promise<UserAddress[]> {
-    const addresses: UserAddress[] = [];
-    for (const add of address) {
-      const addressToSave = new UserAddress();
-
-      addressToSave.country = add.country;
-      addressToSave.city = add.city;
-      addressToSave.street = add.street;
-      addressToSave.house = add.house;
-      addressToSave.apartment = add.apartment;
-
-      addresses.push(await this.userAddressRepository.save(addressToSave));
-    }
-    return addresses;
   }
 }
