@@ -5,7 +5,7 @@ export = {
   username: 'root',
   password: 'password',
   database: 'shop',
-  entities: [__dirname + '/**/*.entity.{js,ts}'],
+  entities: [__dirname + '/**/*.entity{.ts,.js}'],
   synchronize: true,
   autoLoadEntities: true,
 };
