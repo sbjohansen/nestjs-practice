@@ -1,12 +1,12 @@
 import { Roles } from '../enums/roles.enum';
 import { IsNotEmpty, IsNumber } from 'class-validator';
-
+import { UserAddress } from '../db/userAddress.entity';
 export interface UpdateUserDTO {
   firstName?: string;
   lastName?: string;
   email?: string;
   dateOfBirth?: Date;
-  address?: Array<UpdateUserAddressDTO>;
+  address: Array<UserAddress>;
   role?: Array<Roles>;
 }
 

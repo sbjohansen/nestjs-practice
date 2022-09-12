@@ -25,17 +25,7 @@ export class User {
   @CreateDateColumn({ type: 'timestamp' })
   dateOfBirth: Date;
   @OneToMany((type) => UserAddress, (address) => address.user)
-  address?: Array<UserAddress>;
-
-  @JoinTable({
-    name: 'users_addresses',
-    joinColumn: {
-      name: 'userId',
-    },
-    inverseJoinColumn: {
-      name: 'addressId',
-    },
-  })
+  address?: UserAddress[];
   @Column({ length: 100 })
   @Column('enum', {
     enum: Roles,

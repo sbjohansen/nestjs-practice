@@ -13,14 +13,17 @@ import { UpdateUserDTO } from './dto/update-user.dto';
 import { ExternalUserDTO } from './dto/external-user.dto';
 import { User } from './db/users.entity';
 import { UsersDataService } from './users-data.service';
-
+import { CreateUserAddressDTO } from './dto/create-user.dto';
+import { UpdateUserAddressDTO } from './dto/update-user.dto';
 @Controller('users')
 export class UsersController {
   constructor(private userRepository: UsersDataService) {}
 
   @Post()
-  async addUser(@Body() user: CreateUserDTO): Promise<ExternalUserDTO> {
-    return this.mapUserToExternal(await this.userRepository.addUser(user));
+  async addUser(@Body() _item_: CreateUserDTO): Promise<ExternalUserDTO> {
+    const user = await this.userRepository.addUser(_item_);
+    console.log(_item_);
+    return this.mapUserToExternal(user);
   }
 
   mapUserToExternal(user: User): ExternalUserDTO {

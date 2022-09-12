@@ -24,16 +24,16 @@ export class UsersDataService {
       throw new UserRequireUniqueEmailException();
     } */
 
-    Logger.log(_item_.address);
+    console.log(_item_.address);
 
-    const userToSave = new User();
-    userToSave.firstName = _item_.firstName;
-    userToSave.lastName = _item_.lastName;
-    userToSave.email = _item_.email;
-    userToSave.dateOfBirth = _item_.dateOfBirth;
-    userToSave.address = await this.userAddressRepository.find();
-    userToSave.role = _item_.role;
-    return this.userRepository.save(userToSave);
+    const user = new User();
+    user.firstName = _item_.firstName;
+    user.lastName = _item_.lastName;
+    user.email = _item_.email;
+    user.dateOfBirth = _item_.dateOfBirth;
+    user.role = _item_.role;
+    user.address = _item_.address;
+    return this.userRepository.save(user);
   }
 
   async getUserByEmail(email: string): Promise<User> {
@@ -73,16 +73,15 @@ export class UsersDataService {
     address: CreateUserAddressDTO[] | UpdateUserAddressDTO[],
   ): Promise<UserAddress[]> {
     const addresses: UserAddress[] = [];
-    for (const add of address) {
+    console.log(address);
+    for (const addressItem of address) {
       const addressToSave = new UserAddress();
-
-      addressToSave.country = add.country;
-      addressToSave.city = add.city;
-      addressToSave.street = add.street;
-      addressToSave.house = add.house;
-      addressToSave.apartment = add.apartment;
-
-      addresses.push(await this.userAddressRepository.save(addressToSave));
+      addressToSave.street = addressItem.street;
+      addressToSave.city = addressItem.city;
+      addressToSave.house = addressItem.house;
+      addressToSave.country = addressItem.country;
+      addressToSave.apartment = addressItem.apartment;
+      addresses.push(addressToSave);
     }
 
     return addresses;
