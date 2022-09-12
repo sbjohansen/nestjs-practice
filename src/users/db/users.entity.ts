@@ -4,8 +4,9 @@ import {
   Column,
   CreateDateColumn,
   OneToMany,
-  ManyToOne,
+  JoinTable,
 } from 'typeorm';
+import { JoinAttribute } from 'typeorm/query-builder/JoinAttribute';
 
 import { Roles } from '../enums/roles.enum';
 import { UserAddress } from './userAddress.entity';
@@ -24,8 +25,18 @@ export class User {
   @CreateDateColumn({ type: 'timestamp' })
   dateOfBirth: Date;
   @OneToMany((type) => UserAddress, (address) => address.user)
-  address?: UserAddress[];
+  address?: Array<UserAddress>;
 
+  @JoinTable({
+    name: 'users_addresses',
+    joinColumn: {
+      name: 'userId',
+    },
+    inverseJoinColumn: {
+      name: 'addressId',
+    },
+  })
+  @Column({ length: 100 })
   @Column('enum', {
     enum: Roles,
   })

@@ -1,16 +1,14 @@
-import { EntityRepository, Repository, In } from 'typeorm';
+import { EntityRepository, Repository } from 'typeorm';
 import { UserAddress } from './userAddress.entity';
-
 @EntityRepository(UserAddress)
 export class UserAddressRepository extends Repository<UserAddress> {
-  findUserAddressesByStreet(streets: string[]): Promise<UserAddress[]> {
-    return this.find({
+  async deleteUserAddressesByUserId(userId: string): Promise<void> {
+    const usersAddresses = await this.find({
       where: {
-        street: In(streets),
+        id: userId,
       },
     });
-  }
-  findAllAddresses(): Promise<UserAddress[]> {
-    return this.find();
+
+    this.remove(usersAddresses);
   }
 }

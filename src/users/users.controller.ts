@@ -13,30 +13,25 @@ import { UpdateUserDTO } from './dto/update-user.dto';
 import { ExternalUserDTO } from './dto/external-user.dto';
 import { User } from './db/users.entity';
 import { UsersDataService } from './users-data.service';
-import { CreateUserAddressDTO } from './dto/create-user.dto';
-import { UpdateUserAddressDTO } from './dto/update-user.dto';
-import { UserAddressRepository } from './db/userAddress.repository';
-import { UserAddress } from './db/userAddress.entity';
+
 @Controller('users')
 export class UsersController {
   constructor(private userRepository: UsersDataService) {}
 
   @Post()
-  async addUser(@Body() _item_: CreateUserDTO): Promise<ExternalUserDTO> {
-    const user = await this.userRepository.addUser(_item_);
-    return this.mapUserToExternal(user);
+  async addUser(@Body() user: CreateUserDTO): Promise<ExternalUserDTO> {
+    return this.mapUserToExternal(await this.userRepository.addUser(user));
   }
 
   mapUserToExternal(user: User): ExternalUserDTO {
     return {
-      ...user,
-      address: user.address.map((address) => {
-        return {
-          ...address,
-          id: address.id,
-          userId: address.user,
-        };
-      }),
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      dateOfBirth: user.dateOfBirth,
+      address: user.address,
+      role: user.role,
     };
   }
 

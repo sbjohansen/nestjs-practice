@@ -1,28 +1,14 @@
-import { EntityRepository, Repository, In, DeleteResult } from 'typeorm';
+import { EntityRepository, Repository } from 'typeorm';
+
 import { User } from './users.entity';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  findUsersByName(names: string[]): Promise<User[]> {
+  getUserByEmail(email: string): Promise<User[]> {
     return this.find({
       where: {
-        firstName: In(names),
+        email: email,
       },
     });
-  }
-
-  deleteById(id: string): Promise<DeleteResult> {
-    return this.delete({ id });
-  }
-
-  getUserById(id: string[]): Promise<User[]> {
-    return this.find({
-      where: {
-        id: In(id),
-      },
-    });
-  }
-  findRoleByName(name: string): Promise<User> {
-    return this.findOne({ where: { role: name } });
   }
 }

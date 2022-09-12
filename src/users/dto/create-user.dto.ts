@@ -12,8 +12,7 @@ export class CreateUserDTO {
   @IsNotEmpty()
   email: string;
   dateOfBirth: Date;
-  @Type(() => CreateUserAddressDTO)
-  address?: CreateUserAddressDTO[];
+  address?: Array<CreateUserAddressDTO>;
   @IsEnum(Roles)
   role: Array<Roles>;
 }
