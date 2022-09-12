@@ -5,7 +5,7 @@ export class ExternalUserDTO {
   firstName: string;
   lastName: string;
   email: string;
-  address: Array<UserAddress>;
+  address?: Array<UserAddress>;
   dateOfBirth: Date;
   role: Roles[];
 }

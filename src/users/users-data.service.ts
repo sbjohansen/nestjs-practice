@@ -19,12 +19,10 @@ export class UsersDataService {
   private users: Array<User> = [];
 
   async addUser(_item_: CreateUserDTO): Promise<User> {
-    const checkEmail = this.getUserByEmail(_item_.email);
-    /*if (checkEmail) {
+    const checkEmail = await this.userRepository.getUserByEmail(_item_.email);
+    if (checkEmail.length) {
       throw new UserRequireUniqueEmailException();
-    } */
-
-    console.log(_item_.address);
+    }
 
     const user = new User();
     user.firstName = _item_.firstName;
@@ -32,7 +30,7 @@ export class UsersDataService {
     user.email = _item_.email;
     user.dateOfBirth = _item_.dateOfBirth;
     user.role = _item_.role;
-    user.address = _item_.address;
+    user.address = await this.prepareUserAddressesToSave(_item_.address);
     return this.userRepository.save(user);
   }
 
@@ -46,14 +44,11 @@ export class UsersDataService {
 
   async updateUser(id: string, _item_: UpdateUserDTO): Promise<User> {
     const userToUpdate = await this.getUserById(id);
-
     userToUpdate.firstName = _item_.firstName;
     userToUpdate.lastName = _item_.lastName;
     userToUpdate.email = _item_.email;
     userToUpdate.dateOfBirth = _item_.dateOfBirth;
-    userToUpdate.address = await this.prepareUserAddressesToSave(
-      _item_.address,
-    );
+    userToUpdate.address = _item_.address;
     userToUpdate.role = _item_.role;
 
     await this.userRepository.save(userToUpdate);

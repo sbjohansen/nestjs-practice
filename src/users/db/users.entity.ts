@@ -24,8 +24,8 @@ export class User {
   email: string;
   @CreateDateColumn({ type: 'timestamp' })
   dateOfBirth: Date;
-  @OneToMany((type) => UserAddress, (address) => address.user)
-  address?: UserAddress[];
+  @OneToMany((type) => UserAddress, (address) => address.userId)
+  address: Array<UserAddress>;
   @Column({ length: 100 })
   @Column('enum', {
     enum: Roles,
