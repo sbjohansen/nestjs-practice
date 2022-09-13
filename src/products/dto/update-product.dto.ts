@@ -6,4 +6,5 @@ export interface UpdateProductDTO {
   count?: number;
   tags?: Tags[];
   updatedAt?: Array<number>;
+  description?: string;
 }

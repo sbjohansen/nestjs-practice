@@ -6,6 +6,7 @@ export interface ExternalProductDto {
   price: number;
   count: number;
   tags: string[];
+  description: string;
   createdAt: Array<number>;
   updatedAt: Array<number>;
 }

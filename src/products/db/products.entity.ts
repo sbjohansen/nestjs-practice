@@ -39,4 +39,7 @@ export class Product {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
+
+  @Column({ type: 'text', nullable: true })
+  description: string;
 }

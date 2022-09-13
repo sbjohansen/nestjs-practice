@@ -5,4 +5,5 @@ export interface CreateProductDTO {
   price: number;
   count: number;
   tags: Tags[];
+  description: string;
 }

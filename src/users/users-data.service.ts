@@ -8,30 +8,36 @@ import { UserAddressRepository } from './db/userAddress.repository';
 import { User } from './db/users.entity';
 import { UserAddress } from './db/userAddress.entity';
 import { Logger } from '@nestjs/common';
+import { Connection } from 'typeorm';
+import { EntityManager } from 'typeorm';
 
 @Injectable()
 export class UsersDataService {
   constructor(
     private userRepository: UserRepository,
     private userAddressRepository: UserAddressRepository,
+    private connection: Connection,
   ) {}
 
   private users: Array<User> = [];
 
-  async addUser(_item_: CreateUserDTO): Promise<User> {
-    const checkEmail = await this.userRepository.getUserByEmail(_item_.email);
-    if (checkEmail.length) {
-      throw new UserRequireUniqueEmailException();
-    }
+  async addUser(user: CreateUserDTO): Promise<User> {
+    return this.connection.transaction(async (manager: EntityManager) => {
+      const userToSave = new User();
 
-    const user = new User();
-    user.firstName = _item_.firstName;
-    user.lastName = _item_.lastName;
-    user.email = _item_.email;
-    user.dateOfBirth = _item_.dateOfBirth;
-    user.role = _item_.role;
-    user.address = await this.prepareUserAddressesToSave(_item_.address);
-    return this.userRepository.save(user);
+      userToSave.firstName = user.firstName;
+      userToSave.lastName = user.lastName;
+      userToSave.email = user.email;
+      userToSave.role = user.role;
+      userToSave.dateOfBirth = user.dateOfBirth;
+
+      userToSave.address = await this.prepareUserAddressesToSave(
+        user.address,
+        manager.getCustomRepository(UserAddressRepository),
+      );
+
+      return await manager.getCustomRepository(UserRepository).save(userToSave);
+    });
   }
 
   async getUserByEmail(email: string): Promise<User> {
@@ -42,18 +48,27 @@ export class UsersDataService {
     this.userRepository.delete(id);
   }
 
-  async updateUser(id: string, _item_: UpdateUserDTO): Promise<User> {
-    const userToUpdate = await this.getUserById(id);
-    userToUpdate.firstName = _item_.firstName;
-    userToUpdate.lastName = _item_.lastName;
-    userToUpdate.email = _item_.email;
-    userToUpdate.dateOfBirth = _item_.dateOfBirth;
-    userToUpdate.address = _item_.address;
-    userToUpdate.role = _item_.role;
+  async updateUser(id: string, user: UpdateUserDTO): Promise<User> {
+    return this.connection.transaction(async (manager: EntityManager) => {
+      const userToUpdate = await manager
+        .getCustomRepository(UserRepository)
+        .findOne(id);
 
-    await this.userRepository.save(userToUpdate);
+      userToUpdate.firstName = user.firstName;
+      userToUpdate.lastName = user.lastName;
+      userToUpdate.email = user.email;
+      userToUpdate.role = user.role;
+      userToUpdate.dateOfBirth = user.dateOfBirth;
 
-    return this.getUserById(id);
+      userToUpdate.address = await this.prepareUserAddressesToSave(
+        user.address,
+        manager.getCustomRepository(UserAddressRepository),
+      );
+
+      return await manager
+        .getCustomRepository(UserRepository)
+        .save(userToUpdate);
+    });
   }
 
   async getUserById(id: string): Promise<User> {
@@ -66,19 +81,22 @@ export class UsersDataService {
 
   async prepareUserAddressesToSave(
     address: CreateUserAddressDTO[] | UpdateUserAddressDTO[],
+    userAddressRepository: UserAddressRepository,
   ): Promise<UserAddress[]> {
-    const addresses: UserAddress[] = [];
-    console.log(address);
+    const userAddressesToSave: UserAddress[] = [];
+
     for (const addressItem of address) {
-      const addressToSave = new UserAddress();
-      addressToSave.street = addressItem.street;
-      addressToSave.city = addressItem.city;
-      addressToSave.house = addressItem.house;
-      addressToSave.country = addressItem.country;
-      addressToSave.apartment = addressItem.apartment;
-      addresses.push(addressToSave);
+      const userAddressToSave = new UserAddress();
+
+      userAddressToSave.house = addressItem.house;
+      userAddressToSave.city = addressItem.city;
+      userAddressToSave.country = addressItem.country;
+      userAddressToSave.apartment = addressItem.apartment;
+      userAddressToSave.street = addressItem.street;
+
+      userAddressesToSave.push(userAddressToSave);
     }
 
-    return addresses;
+    return userAddressesToSave;
   }
 }

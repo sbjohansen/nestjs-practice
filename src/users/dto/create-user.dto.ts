@@ -3,6 +3,8 @@ import { Type } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsNumber, IsEnum } from 'class-validator';
 import { UserAddress } from '../db/userAddress.entity';
 import { User } from '../db/users.entity';
+
+import { OneToMany } from 'typeorm';
 export class CreateUserDTO {
   @IsNotEmpty()
   firstName: string;
@@ -13,8 +15,9 @@ export class CreateUserDTO {
   @IsNotEmpty()
   email: string;
   dateOfBirth: Date;
-  @Type(() => CreateUserAddressDTO)
-  address: Array<UserAddress>;
+  @OneToMany((type) => UserAddress, (address) => address.user)
+  cascade: true;
+  address?: UserAddress[];
   @IsEnum(Roles)
   role: Array<Roles>;
 }
