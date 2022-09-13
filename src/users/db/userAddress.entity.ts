@@ -28,19 +28,7 @@ export class UserAddress {
   @Column({ length: 100 })
   street: string;
 
-  @ManyToOne((type) => User, (user) => user.id, {
-    onDelete: 'CASCADE',
-  })
-  user: User;
-  @JoinTable({
-    name: 'user_addresses',
-    joinColumn: {
-      name: 'addressId',
-    },
-    inverseJoinColumn: {
-      name: 'userId',
-    },
-  })
+  @ManyToOne((type) => User, (user) => user.address)
   @JoinColumn({ name: 'userId' })
-  userId: string;
+  user: User;
 }

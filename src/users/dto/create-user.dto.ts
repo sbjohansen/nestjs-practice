@@ -23,7 +23,6 @@ export class CreateUserDTO {
 }
 
 export class CreateUserAddressDTO {
-  id: string;
   @IsNotEmpty()
   country: string;
   @IsNotEmpty()
@@ -36,6 +35,4 @@ export class CreateUserAddressDTO {
   @IsNotEmpty()
   @IsNumber()
   apartment: number;
-  userId: string;
-  user: User;
 }

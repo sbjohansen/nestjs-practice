@@ -2,10 +2,16 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class ProductAddDescription1663081655026 implements MigrationInterface {
   name = 'ProductAddDescription1663081655026';
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  public async up(queryRunner: QueryRunner): Promise<void> {}
+
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `ALTER TABLE \`products\` ADD \`description_backup\` text NULL`,
+    );
+  }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    await queryRunner.query(
+      `ALTER TABLE \`products\` DROP COLUMN \`description_backup\``,
+    );
   }
 }

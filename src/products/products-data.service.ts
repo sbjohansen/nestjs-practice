@@ -25,9 +25,9 @@ export class ProductsDataService {
       const productToSave = new Product();
 
       productToSave.name = item.name;
-      productToSave.description = item.description;
       productToSave.price = item.price;
       productToSave.tags = tags;
+      productToSave.count = item.count;
 
       return await manager
         .getCustomRepository(ProductRepository)
@@ -47,7 +47,6 @@ export class ProductsDataService {
         .findOne(id);
 
       productToUpdate.name = item.name;
-      productToUpdate.description = item.description;
       productToUpdate.price = item.price;
       productToUpdate.tags = tags;
 
