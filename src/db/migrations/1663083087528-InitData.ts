@@ -57,6 +57,37 @@ export class InitData1663083087528 implements MigrationInterface {
     console.log('Products saved');
   }
 
+  private async saveUserAddress(): Promise<UserAddress[]> {
+    const addressesArr: UserAddress[] = [];
+    const userAddress = [];
+    for (let i = 0; i < 10; i++) {
+      const address = {
+        house: faker.datatype.number(100),
+        city: faker.address.city(),
+        country: faker.address.country(),
+        street: faker.address.street(),
+        apartment: faker.datatype.number(100),
+      };
+      userAddress.push(address);
+
+      for (const address of userAddress) {
+        const addressToSave = new UserAddress();
+        addressToSave.house = address.house;
+        addressToSave.city = address.city;
+        addressToSave.country = address.country;
+        addressToSave.street = address.street;
+        addressToSave.apartment = address.apartment;
+        addressesArr.push(
+          await getRepository('UserAddress').save(addressToSave),
+        );
+      }
+
+      console.log('UserAddress saved');
+
+      return addressesArr;
+    }
+  }
+
   private async saveUsers(): Promise<void> {
     const users = [];
     for (let i = 0; i < 10; i++) {
@@ -69,16 +100,7 @@ export class InitData1663083087528 implements MigrationInterface {
         email: faker.internet.email(),
         dateOfBirth: faker.date.past(),
         role: 'ADMIN',
-        address: [
-          {
-            country: faker.address.country(),
-            city: faker.address.city(),
-            street: faker.address.street(),
-            house: faker.datatype.number(100),
-            apartment: faker.datatype.number(100),
-            userId: savedId,
-          },
-        ],
+        address: await this.saveUserAddress(),
       };
       users.push(user);
     }
