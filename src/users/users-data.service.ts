@@ -22,6 +22,11 @@ export class UsersDataService {
   private users: Array<User> = [];
 
   async addUser(user: CreateUserDTO): Promise<User> {
+    const checkEmail = await this.userRepository.getUserByEmail(user.email);
+    if (checkEmail.length) {
+      throw new UserRequireUniqueEmailException();
+    }
+
     return this.connection.transaction(async (manager: EntityManager) => {
       const userToSave = new User();
 
@@ -80,23 +85,23 @@ export class UsersDataService {
   }
 
   async prepareUserAddressesToSave(
-    address: CreateUserAddressDTO[] | UpdateUserAddressDTO[],
+    addresses: CreateUserAddressDTO[],
     userAddressRepository: UserAddressRepository,
   ): Promise<UserAddress[]> {
-    const userAddressesToSave: UserAddress[] = [];
+    const userAddressesToSave = [];
 
-    for (const addressItem of address) {
-      const userAddressToSave = new UserAddress();
+    for (const address of addresses) {
+      const userAddress = new UserAddress();
 
-      userAddressToSave.house = addressItem.house;
-      userAddressToSave.city = addressItem.city;
-      userAddressToSave.country = addressItem.country;
-      userAddressToSave.apartment = addressItem.apartment;
-      userAddressToSave.street = addressItem.street;
+      userAddress.street = address.street;
+      userAddress.city = address.city;
+      userAddress.country = address.country;
+      userAddress.house = address.house;
+      userAddress.apartment = address.apartment;
 
-      userAddressesToSave.push(userAddressToSave);
+      userAddressesToSave.push(userAddress);
     }
 
-    return userAddressesToSave;
+    return await userAddressRepository.save(userAddressesToSave);
   }
 }

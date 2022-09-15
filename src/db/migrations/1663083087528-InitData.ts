@@ -2,6 +2,7 @@ import { MigrationInterface, QueryRunner, getRepository } from 'typeorm';
 import { Tag } from '../../products/db/tag.entity';
 import { faker } from '@faker-js/faker';
 import { User } from '../../users/db/users.entity';
+import { UserAddress } from '../../users/db/userAddress.entity';
 export class InitData1663083087528 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     this.saveTags();
@@ -59,8 +60,10 @@ export class InitData1663083087528 implements MigrationInterface {
   private async saveUsers(): Promise<void> {
     const users = [];
     for (let i = 0; i < 10; i++) {
+      const savedId = faker.datatype.uuid();
+
       const user = {
-        id: faker.datatype.uuid(),
+        id: savedId,
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
         email: faker.internet.email(),
@@ -70,9 +73,10 @@ export class InitData1663083087528 implements MigrationInterface {
           {
             country: faker.address.country(),
             city: faker.address.city(),
-            street: faker.address.streetName(),
+            street: faker.address.street(),
             house: faker.datatype.number(100),
             apartment: faker.datatype.number(100),
+            userId: savedId,
           },
         ],
       };

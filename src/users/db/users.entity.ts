@@ -28,13 +28,14 @@ export class User {
   @JoinTable({
     name: 'users_addresses',
     joinColumn: {
-      name: 'userId',
+      name: 'user',
     },
     inverseJoinColumn: {
       name: 'addressId',
     },
   })
   address: UserAddress[];
+
   @Column({ length: 100 })
   @Column('enum', {
     enum: Roles,

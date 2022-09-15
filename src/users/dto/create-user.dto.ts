@@ -4,7 +4,7 @@ import { IsEmail, IsNotEmpty, IsNumber, IsEnum } from 'class-validator';
 import { UserAddress } from '../db/userAddress.entity';
 import { User } from '../db/users.entity';
 
-import { OneToMany } from 'typeorm';
+import { JoinTable, OneToMany } from 'typeorm';
 export class CreateUserDTO {
   @IsNotEmpty()
   firstName: string;
@@ -16,10 +16,9 @@ export class CreateUserDTO {
   email: string;
   dateOfBirth: Date;
   @OneToMany((type) => UserAddress, (address) => address.user)
-  cascade: true;
-  address?: UserAddress[];
+  address: UserAddress[];
   @IsEnum(Roles)
-  role: Array<Roles>;
+  role: Roles[];
 }
 
 export class CreateUserAddressDTO {

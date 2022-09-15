@@ -20,22 +20,18 @@ export class UsersController {
 
   @Post()
   async addUser(@Body() _item_: CreateUserDTO): Promise<ExternalUserDTO> {
-    const user = await this.userRepository.addUser(_item_);
-
-    return this.mapUserToExternal(user);
+    return this.mapUserToExternal(await this.userRepository.addUser(_item_));
   }
 
   private mapUserToExternal(user: User): ExternalUserDTO {
-    console.log(user);
-
     return {
       id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      address: user.address,
       dateOfBirth: user.dateOfBirth,
       role: user.role,
-      address: user.address,
     };
   }
 
