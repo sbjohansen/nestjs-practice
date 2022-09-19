@@ -79,7 +79,7 @@ export class OrdersController {
     );
   }
 
-  @Delete(':id//products/:idOrderProduct')
+  @Delete(':id/products/:idOrderProduct')
   async deleteProductFromOrder(
     id: string,
     order: UpdateOrderDTO,
