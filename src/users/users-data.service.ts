@@ -1,13 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDTO, CreateUserAddressDTO } from './dto/create-user.dto';
 import { UpdateUserDTO, UpdateUserAddressDTO } from './dto/update-user.dto';
-import { v4 as uuidv4 } from 'uuid';
 import { UserRequireUniqueEmailException } from './exception/user-require-unique-email-exception';
 import { UserRepository } from './db/user.repository';
 import { UserAddressRepository } from './db/userAddress.repository';
 import { User } from './db/users.entity';
 import { UserAddress } from './db/userAddress.entity';
-import { Logger } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { EntityManager } from 'typeorm';
 import { UsersQuery } from './queries/UsersQuery.interface';

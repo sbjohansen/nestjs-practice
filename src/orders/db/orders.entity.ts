@@ -12,7 +12,6 @@ import {
 import { Tag } from './orderTag.entity';
 import { OrderedProducts } from './orderedProducts.entity';
 import { User } from '../../users/db/users.entity';
-import { OrderedAddresses } from './orderedAddresses.entity';
 import { UserAddress } from '../../users/db/userAddress.entity';
 
 @Entity({ name: 'orders' })

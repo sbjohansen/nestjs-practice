@@ -1,5 +1,3 @@
-import { Tags } from '../enums/tags.enum';
-
 export interface ExternalProductDto {
   id: string;
   name: string;
