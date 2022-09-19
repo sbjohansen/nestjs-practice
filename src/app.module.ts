@@ -10,6 +10,7 @@ import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConnectionOptions } from 'typeorm';
+import { OrdersModule } from './orders/orders.module';
 
 import config = require('./ormconfig');
 
@@ -19,6 +20,7 @@ import * as cors from 'cors';
   imports: [
     ProductsModule,
     UsersModule,
+    OrdersModule,
     TypeOrmModule.forRoot(config as ConnectionOptions),
   ],
   controllers: [AppController],
