@@ -24,4 +24,6 @@ export class ExternalOrderDTO {
   address: UserAddress[];
   @IsNotEmpty()
   user: User;
+  productId?: string;
+  userAddressId?: string;
 }

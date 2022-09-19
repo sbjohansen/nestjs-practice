@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { RoleGuard } from '../shared/guards/role.guard';
 import { dateToArray } from '../shared/helpers/date.helper';
@@ -17,6 +18,7 @@ import { ExternalProductDto } from './dto/external-product.dto';
 import { UpdateProductDTO } from './dto/update-product.dto';
 import { ProductsDataService } from './products-data.service';
 import { Product } from './db/products.entity';
+import { ProductsQuery } from './queries/ProductsQuery.interface';
 @Controller('products')
 export class ProductsController {
   constructor(private productRepository: ProductsDataService) {}
@@ -30,9 +32,13 @@ export class ProductsController {
     );
   }
 
-  @Get() async getAllProducts(): Promise<ExternalProductDto[]> {
-    const products = await this.productRepository.getAllProducts();
-    return products.map((i) => this.mapProductToExternal(i));
+  @Get()
+  async getAllProducts(
+    @Query() query: ProductsQuery,
+  ): Promise<Array<ExternalProductDto>> {
+    return (await this.productRepository.getAllProducts(query)).map((product) =>
+      this.mapProductToExternal(product),
+    );
   }
 
   @UseGuards(RoleGuard)

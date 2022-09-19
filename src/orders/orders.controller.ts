@@ -7,8 +7,9 @@ import {
   Param,
   ParseUUIDPipe,
   Controller,
+  Patch,
 } from '@nestjs/common';
-import { CreateOrderDTO } from './dto/create-order.dto';
+import { CreateOrderDTO, CreateOrderProductDto } from './dto/create-order.dto';
 import { UpdateOrderDTO } from './dto/update-order.dto';
 import { ExternalOrderDTO } from './dto/external-order.dto';
 import { Order } from './db/orders.entity';
@@ -66,5 +67,28 @@ export class OrdersController {
     return (await this.orderRepository.getOrders()).map((order) =>
       this.mapOrderToExternal(order),
     );
+  }
+
+  @Patch(':id/products')
+  async addProductToOrder(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Body() createOrderProductsDto: CreateOrderProductDto,
+  ): Promise<ExternalOrderDTO> {
+    return this.mapOrderToExternal(
+      await this.orderRepository.addProductToOrder(id, createOrderProductsDto),
+    );
+  }
+
+  @Delete(':id//products/:idOrderProduct')
+  async deleteProductFromOrder(
+    id: string,
+    order: UpdateOrderDTO,
+  ): Promise<Order> {
+    return this.orderRepository.deleteProductFromOrder(id, order);
+  }
+
+  @Patch(':id/:userAddressId')
+  async updateUserAddress(id: string, order: UpdateOrderDTO): Promise<Order> {
+    return this.orderRepository.updateUserAddress(id, order);
   }
 }

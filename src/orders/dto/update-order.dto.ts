@@ -21,4 +21,6 @@ export class UpdateOrderDTO {
   id?: string;
   @OneToOne((type) => UserAddress, (address) => address.user)
   address?: UserAddress;
+  productId?: string;
+  userAddressId?: string;
 }

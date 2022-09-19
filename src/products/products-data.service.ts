@@ -7,7 +7,7 @@ import { Tag } from './db/tag.entity';
 import { UpdateProductDTO } from './dto/update-product.dto';
 import { EntityManager } from 'typeorm';
 import { Connection } from 'typeorm';
-
+import { ProductsQuery } from './queries/ProductsQuery.interface';
 @Injectable()
 export class ProductsDataService {
   constructor(
@@ -60,7 +60,7 @@ export class ProductsDataService {
     return this.productRepository.findOne(id);
   }
 
-  getAllProducts(): Promise<Product[]> {
-    return this.productRepository.find();
+  getAllProducts(_query_: ProductsQuery): Promise<Product[]> {
+    return this.productRepository.findAll(_query_);
   }
 }

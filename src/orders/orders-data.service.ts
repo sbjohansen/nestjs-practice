@@ -81,4 +81,61 @@ export class OrdersDataService {
         .save(orderToUpdate);
     });
   }
+
+  async addProductToOrder(id: string, order: UpdateOrderDTO): Promise<Order> {
+    return this.connection.transaction(async (manager: EntityManager) => {
+      const orderToUpdate = await manager
+        .getCustomRepository(OrderRepository)
+        .findOne(id);
+
+      orderToUpdate.price = order.price;
+      orderToUpdate.description = order.description;
+      orderToUpdate.state = order.state;
+      orderToUpdate.createdAt = order.createdAt;
+      orderToUpdate.updatedAt = order.updatedAt;
+
+      return await manager
+        .getCustomRepository(OrderRepository)
+        .save(orderToUpdate);
+    });
+  }
+
+  async updateUserAddress(id: string, order: UpdateOrderDTO): Promise<Order> {
+    return this.connection.transaction(async (manager: EntityManager) => {
+      const orderToUpdate = await manager
+        .getCustomRepository(OrderRepository)
+        .findOne(id);
+
+      orderToUpdate.price = order.price;
+      orderToUpdate.description = order.description;
+      orderToUpdate.state = order.state;
+      orderToUpdate.createdAt = order.createdAt;
+      orderToUpdate.updatedAt = order.updatedAt;
+
+      return await manager
+        .getCustomRepository(OrderRepository)
+        .save(orderToUpdate);
+    });
+  }
+
+  async deleteProductFromOrder(
+    id: string,
+    order: UpdateOrderDTO,
+  ): Promise<Order> {
+    return this.connection.transaction(async (manager: EntityManager) => {
+      const orderToUpdate = await manager
+        .getCustomRepository(OrderRepository)
+        .findOne(id);
+
+      orderToUpdate.price = order.price;
+      orderToUpdate.description = order.description;
+      orderToUpdate.state = order.state;
+      orderToUpdate.createdAt = order.createdAt;
+      orderToUpdate.updatedAt = order.updatedAt;
+
+      return await manager
+        .getCustomRepository(OrderRepository)
+        .save(orderToUpdate);
+    });
+  }
 }

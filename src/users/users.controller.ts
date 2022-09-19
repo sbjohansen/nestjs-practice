@@ -13,6 +13,7 @@ import { UpdateUserDTO } from './dto/update-user.dto';
 import { ExternalUserDTO } from './dto/external-user.dto';
 import { User } from './db/users.entity';
 import { UsersDataService } from './users-data.service';
+import { UsersQuery } from './queries/UsersQuery.interface';
 
 @Controller('users')
 export class UsersController {
@@ -59,9 +60,10 @@ export class UsersController {
     return this.mapUserToExternal(await this.userRepository.getUserById(id));
   }
 
-  @Get() async getAllUsers(): Promise<ExternalUserDTO[]> {
-    return (await this.userRepository.getAllUsers()).map((i) =>
-      this.mapUserToExternal(i),
+  @Get()
+  async getUsers(@Body() query: UsersQuery): Promise<ExternalUserDTO[]> {
+    return (await this.userRepository.getAllUsers(query)).map(
+      this.mapUserToExternal,
     );
   }
 }

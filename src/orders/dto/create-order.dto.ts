@@ -27,3 +27,22 @@ export class CreateOrderDTO {
   @IsNotEmpty()
   orderItems: OrderedProducts[];
 }
+
+export class CreateOrderProductDto {
+  @IsNotEmpty()
+  @IsNumber()
+  quantity: number;
+  @IsNotEmpty()
+  @IsNumber()
+  price: number;
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date;
+  @CreateDateColumn({ type: 'timestamp' })
+  updatedAt: Date;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+  @IsNotEmpty()
+  product: string;
+  @IsNotEmpty()
+  orderId: string;
+}
